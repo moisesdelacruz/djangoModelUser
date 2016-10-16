@@ -133,3 +133,5 @@ MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/login/'
+
+AUTH_USER_MODEL = 'users.Account'
