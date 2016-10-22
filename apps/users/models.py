@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils import timezone
 
 # Create your models here.
 
@@ -32,24 +34,26 @@ class AccountManager(BaseUserManager):
         return account
 
 class Account(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=40, unique=True)
+    email = models.EmailField(_('email'), unique=True)
+    username = models.CharField(_('username'), max_length=40, unique=True)
 
-    first_name = models.CharField(max_length=40, blank=True)
-    last_name = models.CharField(max_length=40, blank=True)
+    first_name = models.CharField(_('first name'), max_length=40, blank=True)
+    last_name = models.CharField(_('last name'), max_length=40, blank=True)
     tagline = models.CharField(max_length=140, blank=True)
 
-    is_active = models.BooleanField('Active', default=True)
-    is_staff = models.BooleanField('Staff status', default=False)
-    is_superuser = models.BooleanField('Superuser status', default=False)
+    is_active = models.BooleanField(_('active'), default=True)
+    is_staff = models.BooleanField(_('staff status'), default=False)
+    is_superuser = models.BooleanField(_('superuser status'), default=False)
+
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = AccountManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.email
